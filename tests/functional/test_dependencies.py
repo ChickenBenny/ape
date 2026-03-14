@@ -539,6 +539,16 @@ class TestGitHubDependency:
         with pytest.raises(ValidationError, match=expected):
             _ = GithubDependency(name="foo", github="asdf")
 
+    def test_ensure_ref_or_version_validator_is_instance_method(self):
+        """
+        Regression test for https://github.com/ApeWorX/ape/issues/2713.
+        Ensures 'ensure_ref_or_version' is an instance method (not a classmethod),
+        validating that providing a ref allows the dependency to be created.
+        """
+        dep = GithubDependency(name="foo", github="org/repo", ref="main")
+        assert dep.ref == "main"
+        assert dep.version is None
+
     def test_name_from_github(self):
         """
         When not given a name, it is derived from the github suffix.

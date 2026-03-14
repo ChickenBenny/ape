@@ -278,6 +278,18 @@ def test_data_when_contains_whitespace():
     assert txn.data == data, "Whitespace should not be removed from data"
 
 
+def test_static_fee_transaction_max_fee_validator():
+    """
+    Regression test for https://github.com/ApeWorX/ape/issues/2713.
+    Ensures 'calculate_read_only_max_fee' is an instance method and
+    correctly computes max_fee = gas_limit * gas_price after validation.
+    """
+    gas_price = 20_000_000_000  # 20 gwei
+    gas_limit = 21_000
+    txn = StaticFeeTransaction(gas_price=gas_price, gas_limit=gas_limit, sender=None)
+    assert txn.max_fee == gas_limit * gas_price
+
+
 def test_model_dump_excludes_none_values():
     txn = StaticFeeTransaction(sender=None)
     txn.value = 1000000

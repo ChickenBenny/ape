@@ -196,6 +196,11 @@ python_files = "test_*.py"
 testpaths = "tests"
 markers = """pip: tests that rely on pip install operations"""
 timeout = 300
+filterwarnings = [
+    # Ensure we don't re-introduce deprecated Pydantic 2.12 classmethod validators.
+    # See: https://github.com/ApeWorX/ape/issues/2713
+    "error:.*@model_validator.*mode='after'.*classmethod.*:DeprecationWarning",
+]
 
 [tool.ruff]
 target-version = "py310"
